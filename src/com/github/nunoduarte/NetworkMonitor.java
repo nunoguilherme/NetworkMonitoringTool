@@ -1,6 +1,15 @@
-import javax.swing.*;
-import java.awt.*;
-import java.net.*;
+package com.github.nunoduarte;
+
+import java.awt.BorderLayout;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+
+import javax.swing.JFrame;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
 
 public class NetworkMonitor {
     private JTextArea textArea;
