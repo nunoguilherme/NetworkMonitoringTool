@@ -1,7 +1,5 @@
 package com.github.nunoduarte;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -9,18 +7,23 @@ import java.net.URLConnection;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
+import java.awt.*;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 public class NetworkMonitor {
+
     private JTextArea textArea;
     private JTextField urlField;
+    private JTextField intervalField;
     private JPanel statusPanel;
+    private Logger logger;
+    private int checkInterval = 1000;
+    private JComboBox<String> protocolBox;
+    private JLabel statusLabel;
+    private JTabbedPane tabbedPane;
 
     public NetworkMonitor() {
         // Create a new JFrame instance
@@ -35,6 +38,8 @@ public class NetworkMonitor {
         // Create a JPanel for the status panel
         statusPanel = new JPanel();
         statusPanel.setBackground(Color.RED);
+        statusLabel = new JLabel("Disconnected");
+        statusPanel.add(statusLabel);
         frame.add(statusPanel, BorderLayout.NORTH);
 
         // Create a JTextArea to display the network status
@@ -45,15 +50,34 @@ public class NetworkMonitor {
 
         // Create a JPanel for the control panel
         JPanel controlPanel = new JPanel();
+        controlPanel.setLayout(new FlowLayout());
         JButton startButton = new JButton("Start");
         startButton.addActionListener(e -> startMonitoring());
         JButton stopButton = new JButton("Stop");
         stopButton.addActionListener(e -> stopMonitoring());
         urlField = new JTextField("http://www.google.com", 20);
+        intervalField = new JTextField("1000", 5);
+        protocolBox = new JComboBox<>(new String[]{"HTTP", "HTTPS", "FTP"});
+        controlPanel.add(new JLabel("URL:"));
         controlPanel.add(urlField);
+        controlPanel.add(new JLabel("Interval (ms):"));
+        controlPanel.add(intervalField);
+        controlPanel.add(new JLabel("Protocol:"));
+        controlPanel.add(protocolBox);
         controlPanel.add(startButton);
         controlPanel.add(stopButton);
         frame.add(controlPanel, BorderLayout.SOUTH);
+
+        // Set up logging
+        try {
+            logger = Logger.getLogger("NetworkMonitorLog");
+            FileHandler fh = new FileHandler("NetworkMonitor.log");
+            logger.addHandler(fh);
+            SimpleFormatter formatter = new SimpleFormatter();
+            fh.setFormatter(formatter);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         // Make the frame visible
         frame.setVisible(true);
@@ -62,17 +86,19 @@ public class NetworkMonitor {
     private volatile boolean running = true;
 
     public void startMonitoring() {
+        running = true;
         new Thread(() -> {
             while (running) {
                 // Check the network status every second
                 boolean status = checkNetworkStatus();
                 SwingUtilities.invokeLater(() -> {
                     statusPanel.setBackground(status ? Color.GREEN : Color.RED);
-                    textArea.append(new SimpleDateFormat("HH:mm:ss").format(new Date()) + ": Network is " +
-                            (status ? "up" : "down") + "\n");
+                    statusLabel.setText(status ? "Connected" : "Disconnected");
+                    textArea.append(new SimpleDateFormat("HH:mm:ss").format(new Date()) + ": Network is " + (status ? "up" : "down") + "\n");
+                    logger.info("Network is " + (status ? "up" : "down"));
                 });
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(checkInterval);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                     return;
@@ -82,8 +108,12 @@ public class NetworkMonitor {
     }
 
     public void stopMonitoring() {
-        running = false;
-    }
+    running = false;
+    SwingUtilities.invokeLater(() -> {
+        statusPanel.setBackground(Color.RED);
+        statusLabel.setText("Disconnected");
+    });
+}
 
     public boolean checkNetworkStatus() {
         // You can replace this with a real check
@@ -96,7 +126,7 @@ public class NetworkMonitor {
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
-            return false;  // Could not connect
+            return false; // Could not connect
         }
     }
 
@@ -105,5 +135,3 @@ public class NetworkMonitor {
         SwingUtilities.invokeLater(NetworkMonitor::new);
     }
 }
-
-
