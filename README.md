@@ -30,8 +30,5 @@ These instructions will get you a copy of the project up and running on your loc
 
 Detailed usage instructions or examples can go here.
 
-## Contributing 🤝
-
-Please read [CONTRIBUTING.md](https://github.com/nunoguilherme/NetworkMonitoringTool/CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
 
 
