@@ -1,55 +1,37 @@
-# Network Monitoring Tool 👨‍💻🔍
+# Network Monitoring Tool 🌐🔧
 
-Hey there! Welcome to my Network Monitoring Tool project! 👋 In this project, I've developed a Java-based application that monitors network traffic and detects anomalies. 🌐🚦
+This is a simple yet powerful network monitoring tool built in Java. The tool is capable of tracking network activity and reporting any anomalies or issues it detects.
 
-## Project Overview 📝
+## Features 🌟
 
-The Network Monitoring Tool is a command-line application that utilizes the power of Java's networking capabilities and multithreading to handle multiple network connections simultaneously. 🚀 By capturing and analyzing network traffic, it helps to identify any irregularities or suspicious activities in real-time. 🔎📊
+- Monitor network activity
+- Detect network anomalies
+- Generate reports
 
-## Features and Functionality ✨
+## Getting Started 🚀
 
-- 🌐 **Real-time Monitoring**: The tool constantly listens for incoming network connections and captures network traffic.
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
-- 🚦 **Anomaly Detection**: By analyzing network packets, it detects any unusual patterns or suspicious activities.
+### Prerequisites 📋
 
-- 📊 **Data Analysis**: The tool performs statistical analysis on network traffic to identify trends and patterns.
+- Java JDK
+- A Java IDE (Eclipse, IntelliJ, etc.)
 
-- 📝 **Logging**: It maintains logs of network activities and anomalies detected for later analysis.
+### Installing 🛠️
 
-## How to Use 🚀
+1. Clone the repo
+    
+    `git clone https://github.com/nunoguilherme/NetworkMonitoringTool.git`
+    
+2. Open the project in your Java IDE
+3. Run `NetworkMonitor.java`
 
-To use the Network Monitoring Tool, follow these steps:
+## Usage 💻
 
-1. Clone the repository and navigate to the project directory.
+Detailed usage instructions or examples can go here.
 
-2. Compile the Java code using the appropriate commands.
+## Contributing 🤝
 
-3. Run the `Main` class to start the network monitoring tool.
+Please read [CONTRIBUTING.md](https://github.com/nunoguilherme/NetworkMonitoringTool/CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
 
-4. Interact with the tool by connecting to it on the specified port (8000).
 
-5. Observe the real-time network monitoring and anomaly detection in action!
-
-## Future Enhancements 🌟
-
-I have some exciting plans to enhance this Network Monitoring Tool further:
-
-- 📈 **Visualization**: Implement graphical representations of network traffic for better visualization and analysis.
-
-- 📟 **Protocol Support**: Extend the tool to support multiple network protocols, such as TCP, UDP, and HTTP.
-
-- ⚠️ **Alerting System**: Integrate an alerting system to notify administrators in case of detected anomalies.
-
-- 🌐 **User Interface**: Develop a user-friendly interface to configure and interact with the tool.
-
-## Contribution Guidelines 🤝
-
-I'm open to contributions and ideas to make this Network Monitoring Tool even better! If you have any suggestions, feel free to open an issue or submit a pull request. Let's collaborate and improve the project together!
-
-## Acknowledgements 🙏
-
-I want to express my gratitude to the open-source community and the Java programming language for providing the tools and resources to create this network monitoring tool. It's been an exciting and rewarding journey! 🎉
-
----
-
-Thank you for checking out my Network Monitoring Tool project! I hope you find it interesting and useful. Feel free to explore the code, experiment with it, and provide feedback. Happy monitoring! 😄🔍🌐
