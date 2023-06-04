@@ -1,29 +1,69 @@
-package com.github.nunoduarte;
-
-import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
+import javax.swing.*;
+import java.awt.*;
+import java.net.*;
 
 public class NetworkMonitor {
+    private JTextArea textArea;
 
-    private static final int PORT = 8000;
+    public NetworkMonitor() {
+        // Create a new JFrame instance
+        JFrame frame = new JFrame("Network Monitor");
 
-    public void start() {
-        try (ServerSocket serverSocket = new ServerSocket(PORT)) {
-            System.out.println("Network monitor started. Listening on port " + PORT);
+        // The application will exit when the frame is closed
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        // Set the size of the frame
+        frame.setSize(500, 500);
+
+        // Create a JTextArea to display the network status
+        textArea = new JTextArea();
+        textArea.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        frame.add(scrollPane, BorderLayout.CENTER);
+
+        // Make the frame visible
+        frame.setVisible(true);
+
+        // Start the network monitoring
+        startMonitoring();
+    }
+
+    public void startMonitoring() {
+        new Thread(() -> {
             while (true) {
-                Socket clientSocket = serverSocket.accept();
-                handleClient(clientSocket);
+                // Check the network status every second
+                String status = checkNetworkStatus() ? "Network is up" : "Network is down";
+                textArea.append(status + "\n");
+
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    return;
+                }
             }
+        }).start();
+    }
+
+    public boolean checkNetworkStatus() {
+        // You can replace this with a real check
+        try {
+            final URL url = new URL("http://www.google.com");
+            final URLConnection conn = url.openConnection();
+            conn.connect();
+            conn.getInputStream().close();
+            return true;
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
         } catch (IOException e) {
-            System.err.println("Network monitor encountered an error: " + e.getMessage());
+            return false;  // Could not connect
         }
     }
 
-    private void handleClient(Socket clientSocket) {
-        System.out.println("Accepted connection from " + clientSocket.getInetAddress());
-        // TODO: Implement logic for handling the client
+    public static void main(String[] args) {
+        // Start the application on the Event Dispatch Thread
+        SwingUtilities.invokeLater(NetworkMonitor::new);
     }
 }
+
 
