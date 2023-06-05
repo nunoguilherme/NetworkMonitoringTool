@@ -1,6 +1,10 @@
 package com.github.nunoduarte;
 
 import javax.swing.*;
+
+import org.knowm.xchart.XChartPanel;
+import org.knowm.xchart.XYChart;
+
 import java.awt.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -15,7 +19,6 @@ public class NetworkMonitor extends JFrame {
     private LoggerSetup loggerSetup;
     private TrafficVisualizer trafficVisualizer;
 
-
     public NetworkMonitor() {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(500, 500);
@@ -25,8 +28,7 @@ public class NetworkMonitor extends JFrame {
         textArea = new JTextArea();
         networkStatusChecker = new NetworkStatusChecker(controlPanel.getUrlText());
         loggerSetup = new LoggerSetup();
-        this.trafficVisualizer = new TrafficVisualizer();
-
+        trafficVisualizer = new TrafficVisualizer(this);
 
         textArea.setEditable(false);
         JScrollPane scrollPane = new JScrollPane(textArea);
@@ -35,32 +37,30 @@ public class NetworkMonitor extends JFrame {
         this.add(statusPanel, BorderLayout.NORTH);
         this.add(scrollPane, BorderLayout.CENTER);
 
-        SwingUtilities.invokeLater(() -> new TrafficVisualizer(this));
-        
         this.setVisible(true);
     }
 
     public void startMonitoring() {
-        new Thread(() -> {
-            while (controlPanel.isRunning()) {
-                long startTime = System.currentTimeMillis();
-            boolean status = networkStatusChecker.checkStatus(controlPanel.getProtocolText());
-            long endTime = System.currentTimeMillis();
-            trafficVisualizer.updateChart(endTime, endTime - startTime);
-                SwingUtilities.invokeLater(() -> {
-                    statusPanel.setStatus(status);
-                    textArea.append(new SimpleDateFormat("HH:mm:ss").format(new Date()) + ": Network is " +
-                            (status ? "up" : "down") + "\n");
-                });
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                    return;
-                }
+    new Thread(() -> {
+        while (controlPanel.isRunning()) {
+            long responseTime = networkStatusChecker.checkStatus(controlPanel.getProtocolText());
+            boolean status = responseTime >= 0; // We are assuming that a non-negative response time indicates a successful network request.
+            SwingUtilities.invokeLater(() -> {
+                statusPanel.setStatus(status);
+                String statusText = status ? "up" : "down";
+                String message = new SimpleDateFormat("HH:mm:ss").format(new Date()) + ": Network is " + statusText + ", response time: " + responseTime + " ms\n";
+                textArea.append(message);
+            });
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                return;
             }
-        }).start();
-    }
+        }
+    }).start();
+}
+
 
     public void stopMonitoring() {
         controlPanel.setRunning(false);
@@ -70,4 +70,6 @@ public class NetworkMonitor extends JFrame {
         SwingUtilities.invokeLater(NetworkMonitor::new);
     }
 }
+
+
 

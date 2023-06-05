@@ -6,6 +6,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
+
 public class NetworkStatusChecker {
 
     private String url;
@@ -14,7 +15,8 @@ public class NetworkStatusChecker {
         this.url = url;
     }
 
-    public boolean checkStatus(String protocol) {
+    public long checkStatus(String protocol) {
+        long startTime = System.currentTimeMillis();
         try {
             URL url = new URL(this.url);
             URLConnection conn = url.openConnection();
@@ -26,9 +28,9 @@ public class NetworkStatusChecker {
                     httpConn.setRequestMethod("HEAD");
                     httpConn.connect();
                     int responseCode = httpConn.getResponseCode();
-                    return (responseCode >= 200 && responseCode < 400);
+                    return System.currentTimeMillis() - startTime;
                 } else {
-                    return false;
+                    throw new IllegalArgumentException("Unsupported protocol: " + protocol);
                 }
             } else if (protocol.equalsIgnoreCase("HTTP")) {
                 if (conn instanceof HttpURLConnection) {
@@ -38,28 +40,29 @@ public class NetworkStatusChecker {
                     httpConn.setReadTimeout(5000);
                     httpConn.connect();
                     int responseCode = httpConn.getResponseCode();
-                    return (responseCode >= 200 && responseCode < 400);
+                    return System.currentTimeMillis() - startTime;
                 } else {
-                    return false;
+                    throw new IllegalArgumentException("Unsupported protocol: " + protocol);
                 }
             } else if (protocol.equalsIgnoreCase("FTP")) {
                 // Add FTP specific logic here
                 // Replace the following return statement with your FTP implementation
-                return false;
+                throw new UnsupportedOperationException("FTP not yet implemented");
             } else if (protocol.equalsIgnoreCase("SMTP")) {
                 // Add SMTP specific logic here
                 // Replace the following return statement with your SMTP implementation
-                return false;
+                throw new UnsupportedOperationException("SMTP not yet implemented");
             } else {
                 throw new IllegalArgumentException("Unsupported protocol: " + protocol);
             }
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
-            return false; // Could not connect
+            return -1; // Could not connect
         }
     }
 }
+
 
 
 

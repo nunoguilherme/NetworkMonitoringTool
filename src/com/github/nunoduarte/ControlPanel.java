@@ -15,7 +15,11 @@ public class ControlPanel extends JPanel {
     private JButton stopButton;
     private boolean running;
 
+    private NetworkMonitor monitor;  // Add this
+
     public ControlPanel(NetworkMonitor monitor) {
+        this.monitor = monitor;  // Add this
+
         // Initialize components
         urlField = new JTextField("http://www.google.com", 20);
         protocolBox = new JComboBox<>(new String[]{"HTTP", "HTTPS", "FTP", "SMTP"});
@@ -23,6 +27,8 @@ public class ControlPanel extends JPanel {
         startButton = new JButton("Start");
         stopButton = new JButton("Stop");
         running = false;
+
+        // Remove trafficVisualizer initialization
 
         // Add components to the panel
         setLayout(new FlowLayout());
@@ -75,6 +81,9 @@ public class ControlPanel extends JPanel {
     public String getProtocolText() {
         return (String) protocolBox.getSelectedItem();
     }
+
+
 }
+
 
 
