@@ -13,6 +13,8 @@ public class NetworkMonitor extends JFrame {
     private JTextArea textArea;
     private NetworkStatusChecker networkStatusChecker;
     private LoggerSetup loggerSetup;
+    private TrafficVisualizer trafficVisualizer;
+
 
     public NetworkMonitor() {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -23,6 +25,8 @@ public class NetworkMonitor extends JFrame {
         textArea = new JTextArea();
         networkStatusChecker = new NetworkStatusChecker(controlPanel.getUrlText());
         loggerSetup = new LoggerSetup();
+        this.trafficVisualizer = new TrafficVisualizer();
+
 
         textArea.setEditable(false);
         JScrollPane scrollPane = new JScrollPane(textArea);
@@ -31,13 +35,18 @@ public class NetworkMonitor extends JFrame {
         this.add(statusPanel, BorderLayout.NORTH);
         this.add(scrollPane, BorderLayout.CENTER);
 
+        SwingUtilities.invokeLater(() -> new TrafficVisualizer(this));
+        
         this.setVisible(true);
     }
 
     public void startMonitoring() {
         new Thread(() -> {
             while (controlPanel.isRunning()) {
-                boolean status = networkStatusChecker.checkStatus(controlPanel.getProtocolText());
+                long startTime = System.currentTimeMillis();
+            boolean status = networkStatusChecker.checkStatus(controlPanel.getProtocolText());
+            long endTime = System.currentTimeMillis();
+            trafficVisualizer.updateChart(endTime, endTime - startTime);
                 SwingUtilities.invokeLater(() -> {
                     statusPanel.setStatus(status);
                     textArea.append(new SimpleDateFormat("HH:mm:ss").format(new Date()) + ": Network is " +
