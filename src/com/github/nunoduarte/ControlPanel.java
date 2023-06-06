@@ -36,7 +36,6 @@ public class ControlPanel extends JPanel {
         add(urlField);
         add(new JLabel("Protocol:"));
         add(protocolBox);
-        add(smtpCheckBox);
         add(startButton);
         add(stopButton);
 

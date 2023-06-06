@@ -18,34 +18,33 @@ public class NetworkStatusChecker {
     }
 
     public long checkStatus() {
-        long startTime = System.currentTimeMillis();
-        HttpURLConnection conn = null;
-        try {
-            URL url = new URL(this.url);
-            conn = (HttpURLConnection) url.openConnection();
+    long startTime = System.currentTimeMillis();
+    HttpURLConnection conn = null;
+    try {
+        URL url = new URL(this.url);
+        conn = (HttpURLConnection) url.openConnection();
 
-            bytesReceived.set(0);
+        bytesReceived.set(0);
 
-            InputStream in = conn.getInputStream();
-            byte[] buffer = new byte[1024];
-            int bytesRead;
-            while ((bytesRead = in.read(buffer)) != -1) {
-                bytesReceived.addAndGet(bytesRead);
-            }
+        InputStream in = conn.getInputStream();
+        byte[] buffer = new byte[1024];
+        int bytesRead;
+        while ((bytesRead = in.read(buffer)) != -1) {
+            bytesReceived.addAndGet(bytesRead);
+        }
 
-            long responseTime = System.currentTimeMillis() - startTime;
+        long responseTime = System.currentTimeMillis() - startTime;
 
-            bytesReceived.set(0);
-
-            return responseTime;
-        } catch (IOException e) {
-            return -1;
-        } finally {
-            if (conn != null) {
-                conn.disconnect();
-            }
+        return responseTime;
+    } catch (IOException e) {
+        return -1;
+    } finally {
+        if (conn != null) {
+            conn.disconnect();
         }
     }
+}
+
 
     public long getBytesReceived() {
         return bytesReceived.get();

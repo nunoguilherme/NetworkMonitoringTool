@@ -48,8 +48,6 @@ public class NetworkMonitor extends JFrame {
                 long responseTime = networkStatusChecker.checkStatus();
                 boolean status = responseTime >= 0; // We are assuming that a non-negative response time indicates a successful network request.
 
-                // Here you need to implement your method for gathering network traffic data.
-                // This is a placeholder that adds a random number to the trafficData list every second.
                 trafficData.add((double) networkStatusChecker.getBytesReceived()); // Use actual network data here
                 if (trafficData.size() > 100) { // keep last 100 data points
                     trafficData.remove(0);
