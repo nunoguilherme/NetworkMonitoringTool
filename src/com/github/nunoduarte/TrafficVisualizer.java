@@ -1,13 +1,12 @@
 package com.github.nunoduarte;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import org.knowm.xchart.*;
 import org.knowm.xchart.style.Styler;
 
 import javax.swing.*;
-import java.awt.*;
+
 
 
 public class TrafficVisualizer {

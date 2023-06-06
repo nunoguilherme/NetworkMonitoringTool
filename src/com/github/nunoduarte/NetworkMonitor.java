@@ -2,8 +2,6 @@ package com.github.nunoduarte;
 
 import javax.swing.*;
 
-import org.knowm.xchart.XChartPanel;
-import org.knowm.xchart.XYChart;
 
 import java.awt.*;
 import java.text.SimpleDateFormat;
@@ -16,7 +14,6 @@ public class NetworkMonitor extends JFrame {
     private StatusPanel statusPanel;
     private JTextArea textArea;
     private NetworkStatusChecker networkStatusChecker;
-    private LoggerSetup loggerSetup;
     private TrafficVisualizer trafficVisualizer;
     private List<Double> trafficData; // A list to store traffic data
 
@@ -28,7 +25,6 @@ public class NetworkMonitor extends JFrame {
         statusPanel = new StatusPanel();
         textArea = new JTextArea();
         networkStatusChecker = new NetworkStatusChecker(controlPanel.getUrlText());
-        loggerSetup = new LoggerSetup();
         trafficData = new ArrayList<>(); // Initialize trafficData first
         trafficVisualizer = new TrafficVisualizer(this); // Then create TrafficVisualizer
 
