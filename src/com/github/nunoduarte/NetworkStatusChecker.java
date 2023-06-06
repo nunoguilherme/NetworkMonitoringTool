@@ -1,67 +1,63 @@
 package com.github.nunoduarte;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.concurrent.atomic.AtomicLong;
 
 
 public class NetworkStatusChecker {
-
     private String url;
+    private AtomicLong bytesReceived = new AtomicLong(0);
 
     public NetworkStatusChecker(String url) {
         this.url = url;
     }
 
-    public long checkStatus(String protocol) {
+    public long checkStatus() {
         long startTime = System.currentTimeMillis();
+        HttpURLConnection conn = null;
         try {
             URL url = new URL(this.url);
-            URLConnection conn = url.openConnection();
+            conn = (HttpURLConnection) url.openConnection();
 
-            if (protocol.equalsIgnoreCase("HTTPS")) {
-                if (conn instanceof HttpURLConnection) {
-                    HttpURLConnection httpConn = (HttpURLConnection) conn;
-                    httpConn.setInstanceFollowRedirects(false);
-                    httpConn.setRequestMethod("HEAD");
-                    httpConn.connect();
-                    int responseCode = httpConn.getResponseCode();
-                    return System.currentTimeMillis() - startTime;
-                } else {
-                    throw new IllegalArgumentException("Unsupported protocol: " + protocol);
-                }
-            } else if (protocol.equalsIgnoreCase("HTTP")) {
-                if (conn instanceof HttpURLConnection) {
-                    HttpURLConnection httpConn = (HttpURLConnection) conn;
-                    httpConn.setInstanceFollowRedirects(false);
-                    httpConn.setRequestMethod("HEAD");
-                    httpConn.setReadTimeout(5000);
-                    httpConn.connect();
-                    int responseCode = httpConn.getResponseCode();
-                    return System.currentTimeMillis() - startTime;
-                } else {
-                    throw new IllegalArgumentException("Unsupported protocol: " + protocol);
-                }
-            } else if (protocol.equalsIgnoreCase("FTP")) {
-                // Add FTP specific logic here
-                // Replace the following return statement with your FTP implementation
-                throw new UnsupportedOperationException("FTP not yet implemented");
-            } else if (protocol.equalsIgnoreCase("SMTP")) {
-                // Add SMTP specific logic here
-                // Replace the following return statement with your SMTP implementation
-                throw new UnsupportedOperationException("SMTP not yet implemented");
-            } else {
-                throw new IllegalArgumentException("Unsupported protocol: " + protocol);
+            bytesReceived.set(0);
+
+            InputStream in = conn.getInputStream();
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+            while ((bytesRead = in.read(buffer)) != -1) {
+                bytesReceived.addAndGet(bytesRead);
             }
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
+
+            long responseTime = System.currentTimeMillis() - startTime;
+
+            bytesReceived.set(0);
+
+            return responseTime;
         } catch (IOException e) {
-            return -1; // Could not connect
+            return -1;
+        } finally {
+            if (conn != null) {
+                conn.disconnect();
+            }
         }
     }
+
+    public long getBytesReceived() {
+        return bytesReceived.get();
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
 }
+
+
+
 
 
 

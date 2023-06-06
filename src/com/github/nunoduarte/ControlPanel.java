@@ -44,6 +44,8 @@ public class ControlPanel extends JPanel {
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                startButton.setEnabled(false);
+                stopButton.setEnabled(true);
                 monitor.startMonitoring();
                 running = true;
             }
@@ -52,6 +54,8 @@ public class ControlPanel extends JPanel {
         stopButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                startButton.setEnabled(true);
+                stopButton.setEnabled(false);
                 monitor.stopMonitoring();
                 running = false;
             }
@@ -81,9 +85,8 @@ public class ControlPanel extends JPanel {
     public String getProtocolText() {
         return (String) protocolBox.getSelectedItem();
     }
-
-
 }
+
 
 
 

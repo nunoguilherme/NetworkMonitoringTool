@@ -12,5 +12,6 @@ public class StatusPanel extends JPanel {
     public void setStatus(boolean status) {
         this.setBackground(status ? Color.GREEN : Color.RED);
     }
+
 }
 
