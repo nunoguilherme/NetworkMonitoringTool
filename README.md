@@ -1,34 +1,60 @@
-# Network Monitoring Tool 🌐🔧
+# 🌐 Network Monitor Application
 
-This is a simple yet powerful network monitoring tool built in Java. The tool is capable of tracking network activity and reporting any anomalies or issues it detects.
+This Java-based application provides a simple GUI to monitor the status and traffic of a network. 🚦 It performs regular checks to a given URL and visualizes the network traffic data in real-time. 📊
 
-## Features 🌟
+The main components of the system include:
 
-- Monitor network activity
-- Detect network anomalies
-- Generate reports
+- `NetworkMonitor`: The main class of the application. It orchestrates the operation of the network monitoring system, provides the main GUI window, and controls other components.
+- `TrafficVisualizer`: A component responsible for visualizing the network traffic data.
+- `NetworkStatusChecker`: A class that checks the network status of a given URL.
+- `ControlPanel`: A GUI component that provides controls for the network monitoring system.
 
-## Getting Started 🚀
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
+## ⚙️ Getting Started
 
-### Prerequisites 📋
+1. Clone this repository to your local machine.
 
-- Java JDK
-- A Java IDE (Eclipse, IntelliJ, etc.)
+`git clone <repo_url>`
 
-### Installing 🛠️
+2. Navigate to the root directory of the project.
+bash
 
-1. Clone the repo
-    
-    `git clone https://github.com/nunoguilherme/NetworkMonitoringTool.git`
-    
-2. Open the project in your Java IDE
-3. Run `NetworkMonitor.java`
+`cd <project_directory>`
 
-## Usage 💻
+3. Compile and run the NetworkMonitor.java file.
 
-Detailed usage instructions or examples can go here.
+`javac NetworkMonitor.java`
+`java NetworkMonitor`
 
+4. The GUI will appear, and you can start monitoring your network by clicking on the "Start" button.
+
+
+## 🎮 Using the Application
+
+URL Field: Enter the URL you want to monitor.
+Protocol Box: Choose the desired protocol.
+Start Button: Start monitoring the network status.
+Stop Button: Stop monitoring.
+
+
+## 🛠 Built With
+
+Java Swing: For building the GUI components.
+Java AWT: For layout management of the GUI.
+Java Networking (java.net): To handle network connections.
+
+
+## 🤝 Contributing
+
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+
+## 👤 Authors
+
+-nunoguilherme
+
+
+## 📝 License
+This project is licensed under the MIT License - see the LICENSE file for details.
 
 
