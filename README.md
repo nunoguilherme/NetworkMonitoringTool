@@ -36,6 +36,8 @@ Protocol Box: Choose the desired protocol.
 Start Button: Start monitoring the network status.
 Stop Button: Stop monitoring.
 
+<img width="791" alt="Screenshot 2023-06-06 at 15 25 10" src="https://github.com/nunoguilherme/NetworkMonitoringTool/assets/132608489/93bd5c26-0a19-44bb-a2e4-d6f0587a2e18">
+
 
 ## 🛠 Built With
 
