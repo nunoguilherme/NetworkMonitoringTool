@@ -49,12 +49,9 @@ Java Networking (java.net): To handle network connections.
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
 
-## 👤 Authors
-
 -nunoguilherme
 
 
-## 📝 License
-This project is licensed under the MIT License - see the LICENSE file for details.
+
 
 
